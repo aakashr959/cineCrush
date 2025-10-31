@@ -8,11 +8,14 @@ import Navbar from './Components/Navbar';
 import { MovieProvider } from './contexts/MovieContext';
 import Footer from './Components/Footer';
 
+
+
 function App() {
   return (
     <MovieProvider>
       <div>
       <Navbar />
+      
       <main className = "main-content">
       <Routes>
         <Route path = "/" element={<Home />} />

@@ -1,10 +1,13 @@
 /* Navbar.css */
 .navbar {
-  position: fixed; /* stays at top even when you scroll */
+  position: fixed; /* stays at top even when we scroll */
   top: 0;
-  left: 0;
-  width: 100%; /* spans full width */
-  background: #242424;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  margin-top: 1rem;
+  width: 92%; /* spans full width */
+  background: transparent;
+  border-radius: 5rem;
   border-bottom: 0.5px solid black;
   color: white;
   display: flex;
@@ -21,86 +24,61 @@
   margin: 30px;
 }
 
-.nav-links li {
-  cursor: pointer;
-  transition: color 0.3s ease;
+/* Search in navbar */
+.navbar-search{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
 }
 
-.nav-links li:hover {
-  color: #00bfff;
+/* Navbar: Prime-style dark header */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: linear-gradient(180deg, rgba(6,8,10,0.95), rgba(6,8,10,0.75));
+  color: #fff;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
 }
 
+.nav-left, .nav-center, .nav-right { display: flex; align-items: center; }
 
+.navbar-brand { display:flex; align-items:center; gap:6px; text-decoration:none; }
+.navbar-brand .word-one { color:#cfd8dc;  font-weight:700; font-size:1.8rem; font-family: 'Segoe UI', Roboto, sans-serif; text-transform:lowercase }
+.navbar-brand .word-two { color:#1e88e5; font-weight:700; font-size:1.9rem; margin-left:0.01rem }
 
+.nav-center { flex: 1; justify-content: center; }
+.nav-list { display:flex; gap:20px; list-style:none; margin:0; padding:0 }
+.nav-link { color: #dfe6ea; text-decoration:none; padding:8px 12px; border-radius:6px; font-weight:500 }
+.nav-link:hover, .nav-link:focus { background: rgba(255,255,255,0.03); color: #fff }
 
-/* --- Base Styling for Alignment --- */
-.website-title-split {
-  font-family: 'Arial Black', sans-serif;
-  font-size: 4rem;
-  letter-spacing: 0px; /* Bring the words close together */
-  line-height: 1;
+.nav-right { gap: 12px }
+.navbar-search { display:flex; align-items:center; gap:8px }
+.search-input { padding:8px 10px; border-radius:6px; border: none; background: rgba(255,255,255,0.04); color: #fff; min-width:200px }
+.search-input::placeholder { color: #b3bfc6 }
+.search-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(30,136,229,0.12) }
+.search-button { background: transparent; border: none; color: #fff; cursor:pointer; font-size:1.05rem }
+
+.nav-actions { display:flex; gap:8px; align-items:center }
+.icon-btn { background: rgba(255,255,255,0.03); border: none; color:#fff; padding:8px 10px; border-radius:8px; cursor:pointer }
+.avatar-btn { background: transparent; border:none; cursor:pointer }
+.avatar { display:inline-block; width:32px; height:32px; border-radius:50%; background:#37474f; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600 }
+.join-btn { background: #0b63d6; color: white; padding:8px 12px; border-radius:999px; text-decoration:none; font-weight:600 }
+
+@media (max-width: 920px) {
+  .nav-list { gap:10px }
+  .search-input { min-width:140px }
 }
 
-/* --- Style for "cine" (Bold & Metallic) --- */
-.website-title-split .word-one {
-  color: #c0c0c0; /* Silver/Gray base */
-  font-weight: 300;
-  text-transform: lowercase;
-  /* Shadow for a metallic, slightly recessed look */
-  text-shadow: 
-    -1px -1px 1px rgba(255, 255, 255, 0.4),
-    2px 2px 2px rgba(0, 0, 0, 0.8); 
-}
-
-/* --- Style for "Crush" (Vibrant & Glowing) --- */
-.website-title-split .word-two {
-  color: blue; 
-  font-weight: 300; /* Lighter weight */
-  text-transform: capitalize;
-  
-  
-}
-
-/* --- Base Styling for Alignment --- */
-.website-title-split-alt {
-  font-family: 'Impact', sans-serif;
-  font-size: 5rem;
-  letter-spacing: -2px; /* Overlap the words slightly */
-  line-height: 1;
-}
-
-/* --- Style for "cine" (Outline) --- */
-.website-title-split-alt .word-one {
-  color: transparent; /* Transparent fill */
-  -webkit-text-stroke-width: 3px; /* Thick outline */
-  -webkit-text-stroke-color: #5d9cec; /* Bright Blue outline */
-}
-
-/* --- Style for "Crush" (Solid Fill & Shadow) --- */
-.website-title-split-alt .word-two {
-  color: #ffffff; /* White solid fill */
-  /* Drop shadow to make it pop */
-  text-shadow: 
-    5px 5px 0px #2a2a6a, /* Dark shadow for pop */
-    7px 7px 0px #1e1e48;
-}
-
-
-
-@media (max-width: 768px) {
-  .navbar {
-    padding: 1rem;
-  }
-
-  .navbar-brand {
-    font-size: 1.2rem;
-  }
-
-  .navbar-links {
-    gap: 1rem;
-  }
-
-  .nav-link {
-    padding: 0.5rem;
-  }
+@media (max-width: 640px) {
+  .nav-center { display: none }
+  .search-input { min-width:90px }
+  .navbar { padding: 0 12px }
 }

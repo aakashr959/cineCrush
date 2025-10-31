@@ -1,77 +1,75 @@
 import MovieCard from "../Components/MovieCard";
+import HeroBanner from "../Components/HeroBanner";
 import { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar"; 
+import { useLocation } from "react-router-dom";
 import "../css/Home.css";
 import { searchMovies, getPopularMovies } from "../services/api"
 
 function Home() {
-    const [searchQuery, setSearchQuery] = useState("");
     const [movies, setMovies] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const location = useLocation();
 
+    // Load popular movies or perform a search when `q` query param changes
     useEffect(() => {
+        const q = new URLSearchParams(location.search).get('q') || '';
+
         const loadPopularMovies = async () => {
             try {
                 const popularMovies = await getPopularMovies();
                 setMovies(popularMovies);
-
-            } catch(err){
-                setError("Failed to load  movies...");
+                setError(null);
+            } catch (err) {
+                setError("Failed to load movies...");
                 console.log(err);
-            } 
-            finally {
+            } finally {
                 setLoading(false);
             }
-            
+        };
+
+        const performSearch = async (query) => {
+            if (!query.trim()) return loadPopularMovies();
+            setLoading(true);
+            try {
+                const searchResults = await searchMovies(query);
+                setMovies(searchResults || []);
+                setError(null);
+            } catch (err) {
+                setError("Failed to search movies...");
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        // If q param exists, run search; otherwise load popular movies
+        if (q) {
+            performSearch(q);
+        } else {
+            loadPopularMovies();
         }
-        loadPopularMovies();
-    }, [])
-
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        if(!searchQuery.trim()) {
-            return;
-        }
-        if(loading) {
-            return;
-        }    
-        setLoading (true);    
-        try{
-            const searchResults = await searchMovies(searchQuery);
-            setMovies(searchResults);
-            setError(null);
-
-
-        } catch(err) {
-            setError("Failed to search movies...");
-            console.log(err);
-
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    }, [location.search]);
 
     return (
         <div className = "home">
-            <form onSubmit = {handleSearch} className = "search-form">
-                <input type = "text" placeholder = "search for movies..." className="search-input" value = {searchQuery} onChange = {(e) => setSearchQuery(e.target.value)}/>
-                <button type = "submit" className = "search-button"> Search </button>
-            </form>
-
             {error && <div className = "error-message"> {error} </div>}
 
             {loading ? (
                 <div className = "loading"> Loading...</div> 
             ) : (
-            <div className="movies-grid">
-                {movies.map(movie => 
-                    (
-                    <MovieCard movie = {movie} key = {movie.id}/>
-                ))}
-            </div>
-    )}
+            <>
+                {/* Hero carousel: use first 5 movies */}
+                {movies.length > 0 && <HeroBanner movies={movies.slice(0, 5)} />}
+
+                <div className="movies-grid">
+                    {/* Skip the first 5 movies since they're in the hero */}
+                    {movies.slice(5).map(movie => (
+                        <MovieCard movie={movie} key={movie.id} />
+                    ))}
+                </div>
+            </>
+            )}
         </div>
     );
 }

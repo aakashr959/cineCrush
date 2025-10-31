@@ -20,4 +20,17 @@ export const searchMovies = async (query) => {
     return data.results || [];
 };
 
+export const getNowPlaying = async () => {
+    const response = await fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`);
+    const data = await response.json();
+    return data.results || [];
+};
+
+export const getTrendingMovies = async (timeWindow = 'week') => {
+    // timeWindow can be 'day' or 'week'
+    const response = await fetch(`${BASE_URL}/trending/movie/${timeWindow}?api_key=${API_KEY}`);
+    const data = await response.json();
+    return data.results || [];
+};
+
 

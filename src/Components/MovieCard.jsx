@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../css/MovieCard.css";
 import { useMovieContext } from "../contexts/MovieContext";
+import MovieDetails from "./MovieDetails";
 
 function MovieCard({movie}) {
     const {isFavourite, addToFavourites, removeFromFavourites} = useMovieContext();
@@ -9,6 +10,10 @@ function MovieCard({movie}) {
     const [showTrailer, setShowTrailer] = useState(false);
     const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
     const trailerContainerRef = useRef(null);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [hidden, setHidden] = useState(false);
+    const [showDetails, setShowDetails] = useState(false);
+    
     // Read API key from Vite env (local `.env` not committed). If you need
     // to run locally, create a `.env` file with VITE_MOVIE_APII_KEY=your_key
     const API_KEY = import.meta.env.VITE_MOVIE_APII_KEY;
@@ -127,31 +132,52 @@ function MovieCard({movie}) {
         return () => { document.body.style.overflow = ''; };
     }, [showTrailer]);
 
-
-    function onFavouriteClick(evnt) {
-        evnt.preventDefault()
-        if(favourite){
-            removeFromFavourites (movie.id);
+    const handleNotInterested = () => { setHidden(true); setMenuOpen(false); };
+    const handleToggleFavourite = () => { if (favourite) removeFromFavourites(movie.id); else addToFavourites(movie); setMenuOpen(false); };
+    const handleShare = async () => {
+        try {
+            if (navigator.share) {
+                await navigator.share({ title: movie.title, text: movie.overview, url: `https://www.themoviedb.org/movie/${movie.id}` });
+            } else {
+                await navigator.clipboard.writeText(`https://www.themoviedb.org/movie/${movie.id}`);
+                alert('Movie link copied to clipboard');
+            }
+        } catch (err) {
+            console.warn('Share failed', err);
+            try { await navigator.clipboard.writeText(`https://www.themoviedb.org/movie/${movie.id}`); alert('Movie link copied to clipboard'); } catch { alert('Could not share or copy link'); }
         }
-        else{
-            addToFavourites(movie);
-        }
-    }
+        setMenuOpen(false);
+    };
+    const handleWhereToWatch = () => { setShowDetails(true); setMenuOpen(false); };
     
+    if (hidden) return null;
+
     return (
         <div className="movie-card"> 
             <div className="movie-poster">
                 <img src = {`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt = {movie.title} />
                 <div className="movie-overlay">
-                    <button className = {`favourite-btn ${favourite ? "active" : ""}`} onClick = {onFavouriteClick}> &#x2665; </button>
+                    <button className="menu-btn" onClick={() => setMenuOpen(prev => !prev)}>⋯</button>
+                    {menuOpen && (
+                        <div className="menu-dropdown" onClick={(e) => e.stopPropagation()}>
+                            <button className="menu-item" onClick={handleNotInterested}>Not interested</button>
+                            <button className="menu-item" onClick={handleToggleFavourite}>{favourite ? 'Remove from favourites' : 'Add to favourites'}</button>
+                            <button className="menu-item" onClick={handleShare}>Share</button>
+                            <button className="menu-item" onClick={handleWhereToWatch}>Where can I watch</button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="movie-info">
                 <h3 className="movie-title">{movie.title}</h3>
                 <p className="movie_releasedate">{movie.release_date?.split("-")[0]}</p>
-                <h3>{movie.title}</h3>
 
-            <button onClick={fetchTrailer}>Watch Trailer</button>
+                <button onClick={() => setShowDetails(true)}>See Details</button>
+                <button onClick={fetchTrailer}>Watch Trailer</button>
+
+                {showDetails && (
+                    <MovieDetails movieId={movie.id} onClose={() => setShowDetails(false)} />
+                )}
 
             {showTrailer && (
                 <div className="trailer-overlay" onClick={closeTrailer}>

@@ -1,0 +1,69 @@
+#hero-section {
+    /* 1. Full Width and Height */
+    width: 100%;
+    height: 100vh; /* Adjust height as needed */
+    position: relative;
+    padding: 100px 0;
+    display: flex;
+    align-items: center; /* Center content vertically */
+}
+
+/* 2. Background and Visuals (Pseudo-element for Overlay) */
+#hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Replace with your image path. For React, place the image in the 'public' folder or import it. */
+    background-image: url('Bollywood_Movies_collage.jpg'); 
+    background-size: cover;
+    background-position: center;
+    
+    /* Dark overlay for text readability */
+    background-color: rgba(0, 0, 0, 0.7);
+    background-blend-mode: multiply;
+    z-index: 1;
+}
+
+/* 3. Text and Content Styling */
+.hero-content {
+    position: relative; 
+    z-index: 2; /* Ensure content is above the overlay */
+    color: white;
+    max-width: 800px;
+    /* Center the content horizontally and add side margins/padding */
+    margin: 0 auto; 
+    padding: 0 5%;
+    text-align: left; /* Adjust alignment as needed */
+}
+
+.hero-content h1 {
+    font-size: 3.5em; 
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    max-width: 600px;
+}
+
+/* 4. Call-to-Action Button */
+.cta-button {
+    background-color: #fca311; 
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #ffb74d;
+}

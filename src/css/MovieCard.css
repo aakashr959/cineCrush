@@ -2,7 +2,8 @@
     position: relative;
     border-radius: 50px;
     overflow: hidden;
-    background-color: rgb(12, 66, 17);
+    background: crimson;
+    
     transition: transform 0.2s;
     height: 100%;
     display: flex;
@@ -97,16 +98,15 @@
     margin-top: auto;
     padding: 0.5rem;
     background-color: transparent;
-    border-radius: 10px;
+    
     color: white;
-    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .movie-info button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
+    border-bottom: 2px solid whitesmoke;
+    object-fit: cover;
 }
 
 .movie-info h3 {
@@ -207,4 +207,55 @@ html, body {
         height: 32px;
         font-size: 1.2rem;
     }
+}
+
+/* Hamburger/menu button placed top-right of the poster */
+.menu-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(0,0,0,0.6);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 40;
+    font-size: 20px;
+}
+
+/* Dropdown presented as a compact horizontal row */
+.menu-dropdown {
+    position: absolute;
+    top: 8px;
+    right: 52px; /* leave a small gap from the button */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    background: rgba(10,10,10,0.85);
+    padding: 6px 8px;
+    border-radius: 8px;
+    z-index: 45;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+}
+
+.menu-item {
+    background: transparent;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 0.85rem;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.06);
 }
